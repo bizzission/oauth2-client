@@ -21,7 +21,7 @@ class Vkontakte extends AbstractProvider
 
     public function urlUserDetails(AccessToken $token)
     {
-        $fields = ['nickname',
+        $fields = array('nickname',
             'screen_name',
             'sex',
             'bdate',
@@ -45,7 +45,7 @@ class Vkontakte extends AbstractProvider
             'can_post',
             'universities',
             'schools',
-            'verified', ];
+            'verified',);
 
         return "https://api.vk.com/method/users.get?user_id={$token->uid}&fields="
             .implode(",", $fields)."&access_token={$token}";
@@ -61,7 +61,7 @@ class Vkontakte extends AbstractProvider
         $location = (isset($response->country)) ? $response->country : null;
         $description = (isset($response->status)) ? $response->status : null;
 
-        $user->exchangeArray([
+        $user->exchangeArray(array(
             'uid' => $response->uid,
             'nickname' => $response->nickname,
             'name' => $response->screen_name,
@@ -71,7 +71,7 @@ class Vkontakte extends AbstractProvider
             'location' => $location,
             'description' => $description,
             'imageUrl' => $response->photo_200_orig,
-        ]);
+        ));
 
         return $user;
     }
@@ -94,6 +94,6 @@ class Vkontakte extends AbstractProvider
     {
         $response = $response->response[0];
 
-        return [$response->first_name, $response->last_name];
+        return array($response->first_name, $response->last_name);
     }
 }

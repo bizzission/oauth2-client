@@ -11,10 +11,10 @@ class LinkedIn extends AbstractProvider
     public $scopeSeparator = ' ';
     public $responseType = 'json';
     public $authorizationHeader = 'Bearer';
-    public $fields = [
+    public $fields = array(
         'id', 'email-address', 'first-name', 'last-name', 'headline',
         'location', 'industry', 'picture-url', 'public-profile-url',
-    ];
+    );
 
     public function urlAuthorize()
     {
@@ -42,7 +42,7 @@ class LinkedIn extends AbstractProvider
         $pictureUrl = (isset($response->pictureUrl)) ? $response->pictureUrl : null;
         $publicProfileUrl = (isset($response->publicProfileUrl)) ? $response->publicProfileUrl : null;
 
-        $user->exchangeArray([
+        $user->exchangeArray(array(
             'uid' => $response->id,
             'name' => $response->firstName.' '.$response->lastName,
             'firstname' => $response->firstName,
@@ -52,7 +52,7 @@ class LinkedIn extends AbstractProvider
             'description' => $description,
             'imageurl' => $pictureUrl,
             'urls' => $publicProfileUrl,
-        ]);
+        ));
 
         return $user;
     }
@@ -71,6 +71,6 @@ class LinkedIn extends AbstractProvider
 
     public function userScreenName($response, AccessToken $token)
     {
-        return [$response->firstName, $response->lastName];
+        return array($response->firstName, $response->lastName);
     }
 }

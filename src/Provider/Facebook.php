@@ -16,7 +16,7 @@ class Facebook extends AbstractProvider
      */
     protected $graphApiVersion;
 
-    public $scopes = ['public_profile', 'email'];
+    public $scopes = array('public_profile', 'email');
 
     public $responseType = 'string';
 
@@ -40,7 +40,7 @@ class Facebook extends AbstractProvider
 
     public function urlUserDetails(\League\OAuth2\Client\Token\AccessToken $token)
     {
-        $fields = implode(',', [
+        $fields = implode(',', array(
             'id',
             'name',
             'first_name',
@@ -52,7 +52,7 @@ class Facebook extends AbstractProvider
             'gender',
             'locale',
             'link',
-        ]);
+        ));
 
         return 'https://graph.facebook.com/'.$this->graphApiVersion.'/me?fields='.$fields.'&access_token='.$token;
     }
@@ -69,7 +69,7 @@ class Facebook extends AbstractProvider
         $gender = (isset($response->gender)) ? $response->gender : null;
         $locale = (isset($response->locale)) ? $response->locale : null;
 
-        $user->exchangeArray([
+        $user->exchangeArray(array(
             'uid' => $response->id,
             'name' => $response->name,
             'firstname' => $response->first_name,
@@ -80,8 +80,8 @@ class Facebook extends AbstractProvider
             'imageurl' => $imageUrl,
             'gender' => $gender,
             'locale' => $locale,
-            'urls' => [ 'Facebook' => $response->link ],
-        ]);
+            'urls' => array('Facebook' => $response->link),
+        ));
 
         return $user;
     }
@@ -98,6 +98,6 @@ class Facebook extends AbstractProvider
 
     public function userScreenName($response, \League\OAuth2\Client\Token\AccessToken $token)
     {
-        return [$response->first_name, $response->last_name];
+        return array($response->first_name, $response->last_name);
     }
 }

@@ -124,14 +124,14 @@ abstract class AbstractProvider implements ProviderInterface
     {
         $this->state = isset($options['state']) ? $options['state'] : md5(uniqid(rand(), true));
 
-        $params = [
+        $params = array(
             'client_id' => $this->clientId,
             'redirect_uri' => $this->redirectUri,
             'state' => $this->state,
             'scope' => is_array($this->scopes) ? implode($this->scopeSeparator, $this->scopes) : $this->scopes,
             'response_type' => isset($options['response_type']) ? $options['response_type'] : 'code',
             'approval_prompt' => isset($options['approval_prompt']) ? $options['approval_prompt'] : 'auto',
-        ];
+        );
 
         return $this->urlAuthorize().'?'.$this->httpBuildQuery($params, '', '&');
     }
@@ -165,12 +165,12 @@ abstract class AbstractProvider implements ProviderInterface
             throw new \InvalidArgumentException($message);
         }
 
-        $defaultParams = [
+        $defaultParams = array(
             'client_id'     => $this->clientId,
             'client_secret' => $this->clientSecret,
             'redirect_uri'  => $this->redirectUri,
             'grant_type'    => $grant,
-        ];
+        );
 
         $requestParams = $grant->prepRequestParams($defaultParams, $params);
 
@@ -330,7 +330,7 @@ abstract class AbstractProvider implements ProviderInterface
      */
     protected function httpBuildQuery($params, $numeric_prefix = 0, $arg_separator = '&', $enc_type = null)
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '>=') && !defined('HHVM_VERSION')) {
+        if (version_compare(PHP_VERSION, '5.3.3', '>=') && !defined('HHVM_VERSION')) {
             if ($enc_type === null) {
                 $enc_type = $this->httpBuildEncType;
             }

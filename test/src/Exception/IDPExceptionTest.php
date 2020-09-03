@@ -54,10 +54,10 @@ class IDPExceptionTest extends \PHPUnit_Framework_TestCase
         $exception = new IDPException(array('error' => 'message', 'code' => 404));
 
         $this->assertEquals(
-            [
+            array(
                 'error' => 'message',
                 'code'  => 404
-            ],
+            ),
             $exception->getResponseBody()
         );
     }

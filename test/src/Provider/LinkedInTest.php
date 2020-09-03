@@ -10,11 +10,11 @@ class LinkedInTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->provider = new \League\OAuth2\Client\Provider\LinkedIn([
+        $this->provider = new \League\OAuth2\Client\Provider\LinkedIn(array(
             'clientId' => 'mock_client_id',
             'clientSecret' => 'mock_secret',
             'redirectUri' => 'none',
-        ]);
+        ));
     }
 
     public function tearDown()
@@ -56,7 +56,7 @@ class LinkedInTest extends \PHPUnit_Framework_TestCase
         $client->shouldReceive('post->send')->times(1)->andReturn($response);
         $this->provider->setHttpClient($client);
 
-        $token = $this->provider->getAccessToken('authorization_code', ['code' => 'mock_authorization_code']);
+        $token = $this->provider->getAccessToken('authorization_code', array('code' => 'mock_authorization_code'));
 
         $this->assertEquals('mock_access_token', $token->accessToken);
         $this->assertLessThanOrEqual(time() + 3600, $token->expires);
@@ -69,7 +69,7 @@ class LinkedInTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEmpty($this->provider->getScopes());
 
-        $this->provider->setScopes(['r_basicprofile','r_emailaddress']);
+        $this->provider->setScopes(array('r_basicprofile','r_emailaddress'));
         $authUrl = $this->provider->getAuthorizationUrl();
 
         $this->assertContains('scope=r_basicprofile+r_emailaddress', $authUrl);
@@ -90,11 +90,11 @@ class LinkedInTest extends \PHPUnit_Framework_TestCase
         $client->shouldReceive('get->send')->times(4)->andReturn($getResponse);
         $this->provider->setHttpClient($client);
 
-        $token = $this->provider->getAccessToken('authorization_code', ['code' => 'mock_authorization_code']);
+        $token = $this->provider->getAccessToken('authorization_code', array('code' => 'mock_authorization_code'));
         $user = $this->provider->getUserDetails($token);
 
         $this->assertEquals(12345, $this->provider->getUserUid($token));
-        $this->assertEquals(['mock_first_name', 'mock_last_name'], $this->provider->getUserScreenName($token));
+        $this->assertEquals(array('mock_first_name', 'mock_last_name'), $this->provider->getUserScreenName($token));
         $this->assertEquals('mock_email', $this->provider->getUserEmail($token));
         $this->assertEquals('mock_email', $user->email);
     }

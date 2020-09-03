@@ -15,11 +15,11 @@ class AbstractProviderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->provider = new \League\OAuth2\Client\Provider\Google([
+        $this->provider = new \League\OAuth2\Client\Provider\Google(array(
             'clientId' => 'mock_client_id',
             'clientSecret' => 'mock_secret',
             'redirectUri' => 'none',
-        ]);
+        ));
     }
 
     public function tearDown()
@@ -33,7 +33,7 @@ class AbstractProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidGrantString()
     {
-        $this->provider->getAccessToken('invalid_grant', ['invalid_parameter' => 'none']);
+        $this->provider->getAccessToken('invalid_grant', array('invalid_parameter' => 'none'));
     }
 
     /**
@@ -42,14 +42,14 @@ class AbstractProviderTest extends \PHPUnit_Framework_TestCase
     public function testInvalidGrantObject()
     {
         $grant = new \StdClass();
-        $this->provider->getAccessToken($grant, ['invalid_parameter' => 'none']);
+        $this->provider->getAccessToken($grant, array('invalid_parameter' => 'none'));
     }
 
     public function testAuthorizationUrlStateParam()
     {
-        $this->assertContains('state=XXX', $this->provider->getAuthorizationUrl([
+        $this->assertContains('state=XXX', $this->provider->getAuthorizationUrl(array(
             'state' => 'XXX'
-        ]));
+        )));
     }
 
     /**
@@ -57,20 +57,20 @@ class AbstractProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructorSetsProperties()
     {
-        $options = [
+        $options = array(
             'clientId' => '1234',
             'clientSecret' => '4567',
             'redirectUri' => 'http://example.org/redirect',
             'state' => 'foo',
             'name' => 'bar',
             'uidKey' => 'mynewuid',
-            'scopes' => ['a', 'b', 'c'],
+            'scopes' => array('a', 'b', 'c'),
             'method' => 'get',
             'scopeSeparator' => ';',
             'responseType' => 'csv',
-            'headers' => ['Foo' => 'Bar'],
+            'headers' => array('Foo' => 'Bar'),
             'authorizationHeader' => 'Bearer',
-        ];
+        );
 
         $mockProvider = new MockProvider($options);
 
@@ -101,17 +101,17 @@ class AbstractProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetUserProperties($response, $name = null, $email = null, $id = null)
     {
-        $token = new AccessToken(['access_token' => 'abc', 'expires_in' => 3600]);
+        $token = new AccessToken(array('access_token' => 'abc', 'expires_in' => 3600));
 
         $provider = $this->getMockForAbstractClass(
             '\League\OAuth2\Client\Provider\AbstractProvider',
-            [
-              [
+            array(
+              array(
                   'clientId'     => 'mock_client_id',
                   'clientSecret' => 'mock_secret',
                   'redirectUri'  => 'none',
-              ]
-            ]
+              )
+            )
         );
 
         /**
@@ -137,37 +137,37 @@ class AbstractProviderTest extends \PHPUnit_Framework_TestCase
 
         $response3 = new \stdClass();
 
-        return [
-            [$response, 'test', 'test@example.com', 1],
-            [$response2],
-            [$response3],
-        ];
+        return array(
+            array($response, 'test', 'test@example.com', 1),
+            array($response2),
+            array($response3),
+        );
     }
 
     public function getHeadersTest()
     {
         $provider = $this->getMockForAbstractClass(
             '\League\OAuth2\Client\Provider\AbstractProvider',
-            [
-              [
+            array(
+              array(
                   'clientId'     => 'mock_client_id',
                   'clientSecret' => 'mock_secret',
                   'redirectUri'  => 'none',
-              ]
-            ]
+              )
+            )
         );
 
         /**
          * @var $provider AbstractProvider
          */
-        $this->assertEquals([], $provider->getHeaders());
-        $this->assertEquals([], $provider->getHeaders('mock_token'));
+        $this->assertEquals(array(), $provider->getHeaders());
+        $this->assertEquals(array(), $provider->getHeaders('mock_token'));
 
         $provider->authorizationHeader = 'Bearer';
-        $this->assertEquals(['Authorization' => 'Bearer abc'], $provider->getHeaders('abc'));
+        $this->assertEquals(array('Authorization' => 'Bearer abc'), $provider->getHeaders('abc'));
 
-        $token = new AccessToken(['access_token' => 'xyz', 'expires_in' => 3600]);
-        $this->assertEquals(['Authorization' => 'Bearer xyz'], $provider->getHeaders($token));
+        $token = new AccessToken(array('access_token' => 'xyz', 'expires_in' => 3600));
+        $this->assertEquals(array('Authorization' => 'Bearer xyz'), $provider->getHeaders($token));
     }
 }
 

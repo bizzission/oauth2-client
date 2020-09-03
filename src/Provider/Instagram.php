@@ -31,13 +31,13 @@ class Instagram extends AbstractProvider
 
         $description = (isset($response->data->bio)) ? $response->data->bio : null;
 
-        $user->exchangeArray([
+        $user->exchangeArray(array(
             'uid' => $response->data->id,
             'nickname' => $response->data->username,
             'name' => $response->data->full_name,
             'description' => $description,
             'imageUrl' => $response->data->profile_picture,
-        ]);
+        ));
 
         return $user;
     }

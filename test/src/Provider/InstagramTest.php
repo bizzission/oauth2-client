@@ -10,11 +10,11 @@ class InstagramTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->provider = new \League\OAuth2\Client\Provider\Instagram([
+        $this->provider = new \League\OAuth2\Client\Provider\Instagram(array(
             'clientId' => 'mock_client_id',
             'clientSecret' => 'mock_secret',
             'redirectUri' => 'none',
-        ]);
+        ));
     }
 
     public function tearDown()
@@ -56,7 +56,7 @@ class InstagramTest extends \PHPUnit_Framework_TestCase
         $client->shouldReceive('post->send')->times(1)->andReturn($response);
         $this->provider->setHttpClient($client);
 
-        $token = $this->provider->getAccessToken('authorization_code', ['code' => 'mock_authorization_code']);
+        $token = $this->provider->getAccessToken('authorization_code', array('code' => 'mock_authorization_code'));
 
 #    print_r($token);die();
 
@@ -69,9 +69,9 @@ class InstagramTest extends \PHPUnit_Framework_TestCase
 
     public function testScopes()
     {
-        $this->assertEquals(['basic'], $this->provider->getScopes());
+        $this->assertEquals(array('basic'), $this->provider->getScopes());
 
-        $this->provider->setScopes(['basic','likes']);
+        $this->provider->setScopes(array('basic','likes'));
         $authUrl = $this->provider->getAuthorizationUrl();
 
         $this->assertContains('scope=basic+likes', $authUrl);
@@ -91,7 +91,7 @@ class InstagramTest extends \PHPUnit_Framework_TestCase
         $client->shouldReceive('get->send')->times(4)->andReturn($getResponse);
         $this->provider->setHttpClient($client);
 
-        $token = $this->provider->getAccessToken('authorization_code', ['code' => 'mock_authorization_code']);
+        $token = $this->provider->getAccessToken('authorization_code', array('code' => 'mock_authorization_code'));
         $user = $this->provider->getUserDetails($token);
 
         $this->assertEquals(12345, $this->provider->getUserUid($token));

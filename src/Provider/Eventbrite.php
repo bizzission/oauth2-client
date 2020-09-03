@@ -26,10 +26,10 @@ class Eventbrite extends AbstractProvider
     public function userDetails($response, \League\OAuth2\Client\Token\AccessToken $token)
     {
         $user = new User();
-        $user->exchangeArray([
+        $user->exchangeArray(array(
             'uid' => $response->user->user_id,
             'email' => $response->user->email,
-        ]);
+        ));
 
         return $user;
     }
