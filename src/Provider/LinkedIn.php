@@ -7,7 +7,7 @@ use League\OAuth2\Client\Token\AccessToken;
 
 class LinkedIn extends AbstractProvider
 {
-    public $scopes = [];
+    public $scopes = array();
     public $scopeSeparator = ' ';
     public $responseType = 'json';
     public $authorizationHeader = 'Bearer';
@@ -44,7 +44,7 @@ class LinkedIn extends AbstractProvider
 
         $user->exchangeArray(array(
             'uid' => $response->id,
-            'name' => $response->firstName.' '.$response->lastName,
+            'name' => $response->firstName . ' ' . $response->lastName,
             'firstname' => $response->firstName,
             'lastname' => $response->lastName,
             'email' => $email,

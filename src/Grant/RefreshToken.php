@@ -13,7 +13,7 @@ class RefreshToken implements GrantInterface
 
     public function prepRequestParams($defaultParams, $params)
     {
-        if (! isset($params['refresh_token']) || empty($params['refresh_token'])) {
+        if (!isset($params['refresh_token']) || empty($params['refresh_token'])) {
             throw new \BadMethodCallException('Missing refresh_token');
         }
 
@@ -22,7 +22,7 @@ class RefreshToken implements GrantInterface
         return array_merge($defaultParams, $params);
     }
 
-    public function handleResponse($response = [])
+    public function handleResponse($response = array())
     {
         return new AccessToken($response);
     }

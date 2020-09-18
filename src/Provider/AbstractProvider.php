@@ -23,7 +23,7 @@ abstract class AbstractProvider implements ProviderInterface
 
     public $uidKey = 'uid';
 
-    public $scopes = [];
+    public $scopes = array();
 
     public $method = 'post';
 
@@ -31,7 +31,7 @@ abstract class AbstractProvider implements ProviderInterface
 
     public $responseType = 'json';
 
-    public $headers = [];
+    public $headers = array();
 
     public $authorizationHeader;
 
@@ -48,7 +48,7 @@ abstract class AbstractProvider implements ProviderInterface
      */
     protected $httpBuildEncType = 1;
 
-    public function __construct($options = [])
+    public function __construct($options = array())
     {
         foreach ($options as $option => $value) {
             if (property_exists($this, $option)) {
@@ -120,7 +120,7 @@ abstract class AbstractProvider implements ProviderInterface
         $this->scopes = $scopes;
     }
 
-    public function getAuthorizationUrl($options = [])
+    public function getAuthorizationUrl($options = array())
     {
         $this->state = isset($options['state']) ? $options['state'] : md5(uniqid(rand(), true));
 
@@ -133,11 +133,11 @@ abstract class AbstractProvider implements ProviderInterface
             'approval_prompt' => isset($options['approval_prompt']) ? $options['approval_prompt'] : 'auto',
         );
 
-        return $this->urlAuthorize().'?'.$this->httpBuildQuery($params, '', '&');
+        return $this->urlAuthorize() . '?' . $this->httpBuildQuery($params, '', '&');
     }
 
     // @codeCoverageIgnoreStart
-    public function authorize($options = [])
+    public function authorize($options = array())
     {
         $url = $this->getAuthorizationUrl($options);
         if ($this->redirectHandler) {
@@ -150,18 +150,18 @@ abstract class AbstractProvider implements ProviderInterface
         // @codeCoverageIgnoreEnd
     }
 
-    public function getAccessToken($grant = 'authorization_code', $params = [])
+    public function getAccessToken($grant = 'authorization_code', $params = array())
     {
         if (is_string($grant)) {
             // PascalCase the grant. E.g: 'authorization_code' becomes 'AuthorizationCode'
             $className = str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $grant)));
-            $grant = 'League\\OAuth2\\Client\\Grant\\'.$className;
-            if (! class_exists($grant)) {
-                throw new \InvalidArgumentException('Unknown grant "'.$grant.'"');
+            $grant = 'League\\OAuth2\\Client\\Grant\\' . $className;
+            if (!class_exists($grant)) {
+                throw new \InvalidArgumentException('Unknown grant "' . $grant . '"');
             }
             $grant = new $grant();
-        } elseif (! $grant instanceof GrantInterface) {
-            $message = get_class($grant).' is not an instance of League\OAuth2\Client\Grant\GrantInterface';
+        } elseif (!$grant instanceof GrantInterface) {
+            $message = get_class($grant) . ' is not an instance of League\OAuth2\Client\Grant\GrantInterface';
             throw new \InvalidArgumentException($message);
         }
 
@@ -191,10 +191,10 @@ abstract class AbstractProvider implements ProviderInterface
                     $request = $client->post(null, $this->getHeaders(), $requestParams)->send();
                     $response = $request->getBody();
                     break;
-                // @codeCoverageIgnoreStart
+                    // @codeCoverageIgnoreStart
                 default:
                     throw new \InvalidArgumentException('Neither GET nor POST is specified for request');
-                // @codeCoverageIgnoreEnd
+                    // @codeCoverageIgnoreEnd
             }
         } catch (BadResponseException $e) {
             // @codeCoverageIgnoreStart
@@ -204,7 +204,7 @@ abstract class AbstractProvider implements ProviderInterface
 
         $result = $this->prepareResponse($response);
 
-        if (isset($result['error']) && ! empty($result['error'])) {
+        if (isset($result['error']) && !empty($result['error'])) {
             // @codeCoverageIgnoreStart
             throw new IDPException($result);
             // @codeCoverageIgnoreEnd
@@ -224,7 +224,7 @@ abstract class AbstractProvider implements ProviderInterface
      */
     protected function prepareResponse($response)
     {
-        $result = [];
+        $result = array();
 
         switch ($this->responseType) {
             case 'json':
@@ -351,7 +351,7 @@ abstract class AbstractProvider implements ProviderInterface
         return $this->fetchProviderData($url, $headers);
     }
 
-    protected function fetchProviderData($url, array $headers = [])
+    protected function fetchProviderData($url, array $headers = array())
     {
         try {
             $client = $this->getHttpClient();
@@ -376,7 +376,7 @@ abstract class AbstractProvider implements ProviderInterface
 
     protected function getAuthorizationHeaders($token)
     {
-        $headers = [];
+        $headers = array();
         if ($this->authorizationHeader) {
             $headers['Authorization'] = $this->authorizationHeader . ' ' . $token;
         }

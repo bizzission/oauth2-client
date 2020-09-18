@@ -13,14 +13,14 @@ class AuthorizationCode implements GrantInterface
 
     public function prepRequestParams($defaultParams, $params)
     {
-        if (! isset($params['code']) || empty($params['code'])) {
+        if (!isset($params['code']) || empty($params['code'])) {
             throw new \BadMethodCallException('Missing authorization code');
         }
 
         return array_merge($defaultParams, $params);
     }
 
-    public function handleResponse($response = [])
+    public function handleResponse($response = array())
     {
         return new AccessToken($response);
     }

@@ -7,7 +7,7 @@ use League\OAuth2\Client\Entity\User;
 class Instagram extends AbstractProvider
 {
     public $scopeSeparator = ' ';
-    public $scopes = ['basic'];
+    public $scopes = array('basic');
     public $responseType = 'json';
 
     public function urlAuthorize()
@@ -22,7 +22,7 @@ class Instagram extends AbstractProvider
 
     public function urlUserDetails(\League\OAuth2\Client\Token\AccessToken $token)
     {
-        return 'https://api.instagram.com/v1/users/self?access_token='.$token;
+        return 'https://api.instagram.com/v1/users/self?access_token=' . $token;
     }
 
     public function userDetails($response, \League\OAuth2\Client\Token\AccessToken $token)
