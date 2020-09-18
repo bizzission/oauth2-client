@@ -34,6 +34,6 @@ class AuthorizationCodeTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidRefreshToken()
     {
-        $this->provider->getAccessToken('authorization_code', ['invalid_code' => 'mock_authorization_code']);
+        $this->provider->getAccessToken('authorization_code', array('invalid_code' => 'mock_authorization_code'));
     }
 }
